@@ -3,8 +3,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex-1 w-full max-w-5xl mx-auto py-12 px-6 sm:px-8">
-      
-      {/* Encabezado del Dashboard */}
+
       <div className="mb-12 space-y-2">
         <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
           OpenView Workspace
@@ -14,7 +13,6 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Cuadrícula de Módulos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         {/* Módulo 1: Captación */}
@@ -40,7 +38,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Módulo 2: Rastreo Automático */}
+        {/* Módulo 2: Rastreo & Trials */}
         <div className="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2.5 bg-purple-50 text-purple-600 rounded-lg">
@@ -52,7 +50,7 @@ export default function Home() {
           </div>
           <p className="text-sm text-zinc-500 mb-5">Suscripciones de prueba y simulador de comportamiento en el producto.</p>
           <div className="space-y-2">
-            <Link href="/trials/nueva" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
+            <Link href="/trials" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
               Iniciar Trial (Suscripción)
               <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
             </Link>
@@ -63,7 +61,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Módulo 3: Ventas y CRM */}
+        {/* Módulo 3: Ventas (CRM) */}
         <div className="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg">
@@ -73,10 +71,14 @@ export default function Home() {
             </div>
             <h2 className="text-lg font-bold text-zinc-900">3. Ventas (CRM)</h2>
           </div>
-          <p className="text-sm text-zinc-500 mb-5">Gestión de alertas automáticas para el equipo comercial de Zimbra.</p>
+          <p className="text-sm text-zinc-500 mb-5">Gestión de alertas automáticas y equipo comercial de Zimbra.</p>
           <div className="space-y-2">
             <Link href="/dashboard" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
-              Dashboard de Alertas (Vendedor)
+              Dashboard de Alertas
+              <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
+            </Link>
+            <Link href="/vendedores" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
+              Equipo de Vendedores
               <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
             </Link>
           </div>
@@ -96,6 +98,33 @@ export default function Home() {
           <div className="space-y-2">
             <Link href="/ordenes-compra" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
               Órdenes y Pagos
+              <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Módulo 5: Reportes — full width */}
+        <div className="md:col-span-2 bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2.5 bg-rose-50 text-rose-600 rounded-lg">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold text-zinc-900">5. Reportes</h2>
+          </div>
+          <p className="text-sm text-zinc-500 mb-5">Visión general del pipeline comercial, conversiones y métricas de rendimiento del equipo.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Link href="/reportes" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
+              Funnel de conversión
+              <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
+            </Link>
+            <Link href="/reportes" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
+              Licencias activas
+              <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
+            </Link>
+            <Link href="/reportes" className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 text-sm font-semibold text-zinc-700 transition-colors group">
+              Pipeline comercial
               <span className="text-zinc-400 group-hover:text-zinc-900 transition-colors">→</span>
             </Link>
           </div>
