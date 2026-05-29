@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 interface Prospecto {
   id: string;
@@ -37,19 +38,40 @@ export default function TrialForm({ prospectos }: Props) {
     try {
       setError(null);
       await crearTrial(data);
+
+      const prospecto = prospectos.find((p) => p.id === data.prospectoId);
+      await Swal.fire({
+        title: '¡Trial iniciado!',
+        text: `Se activó el plan ${data.versionPlan} para ${prospecto?.nombre ?? 'el prospecto'} por 60 días.`,
+        icon: 'success',
+        confirmButtonText: 'Ver prospectos',
+        confirmButtonColor: '#18181b',
+        background: '#ffffff',
+        customClass: {
+          popup: 'rounded-xl',
+          title: 'text-zinc-950 font-bold',
+        },
+      });
+
       router.push('/prospectos');
       router.refresh();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Error al iniciar el período de prueba',
-      );
+      const mensaje = err instanceof Error ? err.message : 'Error al iniciar el período de prueba';
+      setError(mensaje);
+
+      await Swal.fire({
+        title: 'No se pudo iniciar el trial',
+        text: mensaje,
+        icon: 'error',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#18181b',
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">
 
-      {/* Selector de Prospecto */}
       <div className="space-y-1.5">
         <label className="block text-sm font-semibold text-zinc-700">
           Prospecto asignado
@@ -63,7 +85,7 @@ export default function TrialForm({ prospectos }: Props) {
               : 'border-zinc-200 focus:border-zinc-950 focus:ring-zinc-950/5'
           }`}
         >
-          <option value="" className="text-zinc-400">Selecciona un cliente potencial...</option>
+          <option value="">Selecciona un cliente potencial...</option>
           {prospectos.map((p) => (
             <option key={p.id} value={p.id}>
               {p.nombre} — {p.email}
@@ -77,7 +99,6 @@ export default function TrialForm({ prospectos }: Props) {
         )}
       </div>
 
-      {/* Selector de Plan */}
       <div className="space-y-1.5">
         <label className="block text-sm font-semibold text-zinc-700">
           Plan de la plataforma
@@ -102,7 +123,6 @@ export default function TrialForm({ prospectos }: Props) {
         )}
       </div>
 
-      {/* Alerta de Error del Servidor / Acción */}
       {error && (
         <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 rounded-lg p-3.5 text-sm text-red-700 mt-2">
           <svg className="w-4 h-4 mt-0.5 shrink-0 text-red-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -112,7 +132,6 @@ export default function TrialForm({ prospectos }: Props) {
         </div>
       )}
 
-      {/* Botón de Envío con Spinner */}
       <button
         type="submit"
         disabled={isSubmitting}

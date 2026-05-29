@@ -7,6 +7,7 @@ import { CreateProspectoSchema, CreateProspectoType } from '@/app/schemas/prospe
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 interface Empresa {
   id: string;
@@ -41,12 +42,33 @@ export default function ProspectoForm({ empresas }: Props) {
     try {
       setError(null);
       await crearProspecto(data);
+
+      await Swal.fire({
+        title: '¡Prospecto registrado!',
+        text: `${data.nombre} se agregó al sistema exitosamente.`,
+        icon: 'success',
+        confirmButtonText: 'Ver lista',
+        confirmButtonColor: '#18181b',
+        background: '#ffffff',
+        customClass: {
+          popup: 'rounded-xl',
+          title: 'text-zinc-950 font-bold',
+        },
+      });
+
       router.push('/prospectos');
       router.refresh();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Error al registrar prospecto',
-      );
+      const mensaje = err instanceof Error ? err.message : 'Error al registrar prospecto';
+      setError(mensaje);
+
+      await Swal.fire({
+        title: 'No se pudo registrar',
+        text: mensaje,
+        icon: 'error',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#18181b',
+      });
     }
   };
 
@@ -100,9 +122,7 @@ export default function ProspectoForm({ empresas }: Props) {
           )}
         </div>
 
-        {/* Grid de Cargo y Fuente de Origen */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Cargo */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-zinc-700 block">Cargo / Rol</label>
             <input
@@ -122,12 +142,11 @@ export default function ProspectoForm({ empresas }: Props) {
             )}
           </div>
 
-          {/* Fuente de origen */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-zinc-700 block">Origen de captación</label>
             <select
               {...register('fuenteOrigen')}
-              className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-4 focus:border-zinc-900 focus:ring-zinc-950/5 transition-all shadow-sm cursor-pointer appearance-none bg-[url('data:image/svg+xml;bs64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSIjNzE3MTdhIiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTE5LjUgOC4yNWwtNy41IDcuNS03LjUtNy41Ii8+PC9zdmc+')] bg-[length:1.25rem] bg-[right_0.75rem_center] bg-no-repeat pr-10"
+              className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-4 focus:border-zinc-900 focus:ring-zinc-950/5 transition-all shadow-sm cursor-pointer"
             >
               <option value="Google_Ads">Google Ads</option>
               <option value="Email">Email Marketing</option>
@@ -143,20 +162,19 @@ export default function ProspectoForm({ empresas }: Props) {
           </div>
         </div>
 
-        {/* Empresa */}
         <div className="space-y-1.5">
           <label className="text-sm font-medium text-zinc-700 block">Empresa vinculada</label>
           <select
             {...register('empresaId')}
-            className={`w-full bg-white border rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-4 transition-all shadow-sm cursor-pointer appearance-none bg-[url('data:image/svg+xml;bs64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSIjNzE3MTdhIiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTE5LjUgOC4yNWwtNy41IDcuNS03LjUtNy41Ii8+PC9zdmc+')] bg-[length:1.25rem] bg-[right_0.75rem_center] bg-no-repeat pr-10 ${
+            className={`w-full bg-white border rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-4 transition-all shadow-sm cursor-pointer ${
               errors.empresaId 
                 ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' 
                 : 'border-zinc-200 focus:border-zinc-900 focus:ring-zinc-950/5'
             }`}
           >
-            <option value="" className="text-zinc-400">Selecciona una empresa...</option>
+            <option value="">Selecciona una empresa...</option>
             {empresas.map((e) => (
-              <option key={e.id} value={e.id} className="text-zinc-900">
+              <option key={e.id} value={e.id}>
                 {e.nombre} ({e.industria})
               </option>
             ))}
@@ -169,9 +187,8 @@ export default function ProspectoForm({ empresas }: Props) {
           )}
         </div>
 
-        {/* Error Global de la Acción */}
         {error && (
-          <div className="flex items-start gap-2.5 bg-rose-50/60 border border-rose-100 rounded-lg p-3 text-sm text-rose-800 animate-fade-in">
+          <div className="flex items-start gap-2.5 bg-rose-50/60 border border-rose-100 rounded-lg p-3 text-sm text-rose-800">
             <svg className="w-4 h-4 text-rose-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
@@ -179,7 +196,6 @@ export default function ProspectoForm({ empresas }: Props) {
           </div>
         )}
 
-        {/* Botón de Envío */}
         <button
           type="submit"
           disabled={isSubmitting}
@@ -197,7 +213,6 @@ export default function ProspectoForm({ empresas }: Props) {
             'Registrar prospecto'
           )}
         </button>
-
       </form>
     </div>
   );
