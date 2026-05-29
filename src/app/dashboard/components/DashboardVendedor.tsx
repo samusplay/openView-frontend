@@ -177,19 +177,29 @@ export default function DashboardVendedor({ vendedores }: Props) {
                     </div>
                     <div>
                       <p className="font-semibold text-zinc-900">{a.prospectoNombre ?? 'Prospecto'}</p>
-                      <p className="text-xs text-zinc-500 font-medium">Asignado a {a.vendedorNombre ?? '—'}</p>
+                      {/* Aquí mostramos la empresa y el vendedor */}
+                      <p className="text-xs text-zinc-500 font-medium mt-0.5">
+                        {a.empresaNombre ? `${a.empresaNombre} • ` : ''}Asignado a {a.vendedorNombre ?? '—'}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
+                    {/* Badge del nivel (Caliente, Tibio, Frío) */}
+                    {a.nivel && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-600 border border-zinc-200">
+                        {a.nivel}
+                      </span>
+                    )}
+
                     {esCaliente ? (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
                         <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-                        Score {a.scoreDisparador} pts
+                        Score {a.scoreDisparador ?? 0} pts
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                        ⏰ Trial · {a.diasRestantes} días
+                        ⏰ Trial · {a.diasRestantes ?? 0} días
                       </span>
                     )}
                   </div>
@@ -217,11 +227,13 @@ export default function DashboardVendedor({ vendedores }: Props) {
       </div>
 
       {/* Modal de gestión */}
-      <GestionarAlertaModal
-        alerta={alertaGestion}
-        onClose={() => setAlertaGestion(null)}
-        onGuardar={handleGuardar}
-      />
+      {alertaGestion && (
+        <GestionarAlertaModal
+          alerta={alertaGestion}
+          onClose={() => setAlertaGestion(null)}
+          onGuardar={handleGuardar}
+        />
+      )}
     </main>
   );
 }

@@ -22,6 +22,8 @@ export interface Alerta {
   tipo: 'Score_Caliente' | 'Trial_Vencimiento';
   prospectoId: string;
   prospectoNombre?: string;
+  empresaNombre?: string; // 👈 NUEVO CAMPO
+  nivel?: string;         // 👈 NUEVO CAMPO
   vendedorId: string;
   vendedorNombre?: string;
   scoreDisparador: number | null;
