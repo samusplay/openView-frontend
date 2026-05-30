@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 export default function EmpresaForm() {
   const router = useRouter();
@@ -30,12 +31,28 @@ export default function EmpresaForm() {
     try {
       setError(null);
       await crearEmpresa(data);
+
+      await Swal.fire({
+        title: '¡Empresa registrada!',
+        text: `${data.nombre} se agregó al directorio exitosamente.`,
+        icon: 'success',
+        confirmButtonText: 'Ver lista',
+        confirmButtonColor: '#18181b',
+      });
+
       router.push('/empresas');
       router.refresh();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Error al registrar empresa'
-      );
+      const mensaje = err instanceof Error ? err.message : 'Error al registrar empresa';
+      setError(mensaje);
+
+      await Swal.fire({
+        title: 'No se pudo registrar',
+        text: mensaje,
+        icon: 'error',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#18181b',
+      });
     }
   };
 
@@ -47,7 +64,7 @@ export default function EmpresaForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      
+
       {/* Grid para agrupar inputs en pantallas grandes */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="sm:col-span-2">
